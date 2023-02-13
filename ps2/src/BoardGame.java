@@ -1,5 +1,12 @@
+import java.util.Scanner;
+
 public abstract class BoardGame extends Game{
-    protected int length;
-    protected int width;
-    protected Cell[][] Board;
+    Board board;
+    public abstract Player[] launchGame(Scanner sc);
+
+    // continueGame
+
+    // addChecker
+    // processMove
+    // playGame
 }
