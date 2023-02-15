@@ -1,5 +1,5 @@
 public abstract class Player {
-    private int score;
+    protected int score;
 
     public Player() {
         this.score = 0;

@@ -1,10 +1,17 @@
 public class OCPlayer extends Player{
-    public OCPlayer() {
+    private String name;
+
+    public OCPlayer(String name) {
         super();
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "OCPlayer";
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

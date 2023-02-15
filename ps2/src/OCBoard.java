@@ -1,41 +1,90 @@
 import java.util.*;
 
 public class OCBoard extends Board{
-    private Cell[][] OCBoard;
-    private int winCondition;
 
-    public OCBoard(int rows, int cols) {
-        super(rows, cols);
-        this.winCondition = rows-1;
+    public OCBoard(int size) {
+        super(size);
     }
 
     @Override
-    public boolean isHorizontalWin(Cell checker) {
+    public boolean isHorizontalWin(Cell checker){
         int count = 0;
-        for (int i = 0; i < OCBoard.length; i++) {
-            for (int j = 0; j < OCBoard[i].length; j++) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j].equals(checker) && board[i][j] != null) {
+                    count++;
+                    if (count == winCondition) {
+                        return true;
+                    }
+                }
+                else {
+                    count = 0;
+                    break;
+                }
+            }
+            count = 0;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isVerticalWin(Cell checker){
+        int count = 0;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[j][i].equals(checker) && board[j][i] != null) {
+                    count++;
+                    if (count == winCondition) {
+                        return true;
+                    }
+                }
+                else {
+                    count = 0;
+                    break;
+                }
+            }
+            count = 0;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isDiagonalUpWin(Cell checker){
+        int count = 0;
+        for (int i = 0; i < board.length; i++) {
+            if (board[i][i].equals(checker) && board[i][i] != null) {
+                count++;
                 if (count == winCondition) {
                     return true;
                 }
-                if (OCBoard[i][j].equals(checker)) {
-                    count++;
-                }
+            }
+            else {
+                count = 0;
+                break;
             }
         }
         return false;
     }
 
-    public static void main (String[] args) {
-        OCBoard OCboard = new OCBoard(6,6);
-
-        // initialize board
-        OCboard.initializeBoard();
-
-        // add checkers
-        OCboard.addChecker(0,0, 'O');
-
-        // print board
-        System.out.println(OCboard.toString());
+    @Override
+    public boolean isDiagonalDownWin(Cell checker){
+        int count = 0;
+        for (int i = 0; i < board.length; i++) {
+            if (board[i][board.length-1-i].equals(checker) && board[i][board.length-1-i] != null) {
+                count++;
+                if (count == winCondition) {
+                    return true;
+                }
+            }
+            else {
+                count = 0;
+                break;
+            }
+        }
+        return false;
     }
 
+    public boolean isWin(Cell checker) {
+        return isHorizontalWin(checker) || isVerticalWin(checker) || isDiagonalUpWin(checker) || isDiagonalDownWin(checker);
+    }
 }

@@ -23,4 +23,8 @@ public class Cell {
         this.checker = checker;
     }
 
+    public boolean isEmpty() {
+        return checker == '?';
+    }
+
 }

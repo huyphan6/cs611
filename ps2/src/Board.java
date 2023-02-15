@@ -1,24 +1,73 @@
 import java.util.*;
 
 public abstract class Board {
-    private Cell[][] board;
-    private int winCondition;
+    protected Cell[][] board;
+    protected int winCondition;
 
+    public int getWinCondition() {
+        return winCondition;
+    }
+    public void setWinCondition(int winCondition) {
+        this.winCondition = winCondition;
+    }
+
+    //Connect 4 board constructor
     public Board (int rows, int cols) {
+        if (rows < 6 || cols < 7) {
+            throw new IllegalArgumentException("Board must be at least 6x7");
+        }
+        assert(cols == rows+1);
         this.board = new Cell[rows][cols];
+        this.winCondition = 4;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                board[i][j] = new Cell('?');
+            }
+        }
+    }
+
+    //Order and Chaos board constructor
+    public Board(int size) {
+        if (size < 6) {
+            throw new IllegalArgumentException("Size must be at least 6");
+        }
+        this.board = new Cell[size][size];
+        this.winCondition = size-1;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                board[i][j] = new Cell('?');
+            }
+        }
+    }
+
+    public Cell getCell(int x, int y) {
+        if (x < 0 || x > board.length || y < 0 || y > board.length) {
+            throw new IllegalArgumentException("Coordinates are out of bounds");
+        }
+        return board[x][y];
     }
 
     public void addChecker(int x, int y, char checker) {
-        board[x][y].setChecker(checker);
+        if (x < 0 || x > board.length || y < 0 || y > board.length) {
+            throw new IllegalArgumentException("Coordinates are out of bounds");
+        }
+        if (board[x][y] != null && board[x][y].isEmpty()) {
+            board[x][y].setChecker(checker);
+        }
+        else {
+            throw new IllegalArgumentException("Cell is occupied");
+        }
     }
 
+    // to string method that prints the board and egdes
     public String toString() {
         String result = "";
+        result += " " + "—".repeat(4*(winCondition+1)) + "\n";
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                result += board[i][j].toString();
+                result += "| " + board[i][j].getChecker() + " ";
             }
-            result += "\n";
+            result += "| \n " +"—".repeat(4*(winCondition+1)) + "\n";
         }
         return result;
     }
@@ -26,7 +75,7 @@ public abstract class Board {
     public boolean isFull() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j].getChecker() == '?') {
+                if (board[i][j].getChecker() == '?' || board[i][j] == null) {
                     return false;
                 }
             }
@@ -42,67 +91,9 @@ public abstract class Board {
         }
     }
 
-    public boolean isHorizontalWin(Cell checker){
-        int count = 0;
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (count == winCondition) {
-                    return true;
-                }
-                if (board[i][j].equals(checker)) {
-                    count++;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean isVerticalWin(Cell checker){
-        int count = 0;
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (count == winCondition) {
-                    return true;
-                }
-                if (board[j][i].equals(checker)) {
-                    count++;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean isDiagonalDownWin(Cell checker){
-        int count = 0;
-        for (int i = 0; i < board.length-4; i++) {
-            for (int j = 0; j < board[i].length-4; j++) {
-                if (count == winCondition) {
-                    return true;
-                }
-                if (board[i][j].equals(checker) && board[i+1][j+1].equals(checker) && board[i+2][j+2].equals(checker) && board[i+3][j+3].equals(checker) && board[i+4][j+4].equals(checker)) {
-                    count++;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean isDiagonalUpWin(Cell checker){
-        int count = 0;
-        for (int i = 4; i < board.length; i++) {
-            for (int j = 4; j < board[i].length; j++) {
-                if (count == winCondition) {
-                    return true;
-                }
-                if (board[i][j].equals(checker) && board[i-1][j+1].equals(checker) && board[i-2][j+2].equals(checker) && board[i-3][j+3].equals(checker) && board[i-4][j+4].equals(checker)) {
-                    count++;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean isWin(Cell checker){
-        return isHorizontalWin(checker) || isVerticalWin(checker) || isDiagonalUpWin(checker) || isDiagonalDownWin(checker);
-    }
+    public abstract boolean isHorizontalWin(Cell checker);
+    public abstract boolean isVerticalWin(Cell checker);
+    public abstract boolean isDiagonalUpWin(Cell checker);
+    public abstract boolean isDiagonalDownWin(Cell checker);
+    public abstract boolean isWin(Cell checker);
 }

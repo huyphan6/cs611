@@ -10,4 +10,9 @@ public class PlayAllGames {
     public void startAllGames(Scanner sc) {
         //
     }
+
+    public void playOCBoardGame(Scanner sc) {
+        ocBoardGame.playGame(sc);
+    }
+
 }
