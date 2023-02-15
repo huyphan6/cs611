@@ -13,16 +13,29 @@ public class OCBoardGame extends BoardGame{
     private OCPlayer[] players;
     private int turn;
 
+    // Constructor
     public OCBoardGame() {
+    }
+
+    // prints the game stats after the players no longer want to continue playing this game
+    public String getPlayersStats() {
+        return "OC STATS: \n" + players[0].toString() + "'s score= " + players[0].getScore() + "\n" + players[1].toString() + "'s score= " + players[1].getScore();
     }
 
     // initialize the players
     public OCPlayer[] initPlayers(Scanner sc) {
         System.out.println("Initializing the players...");
-        System.out.println("Player 1 will be Order and Player 2 will be Chaos. \n");
-        players = new OCPlayer[2];
-        players[0] = new OCPlayer("Order");
-        players[1] = new OCPlayer("Chaos");
+        System.out.println("Player 1 would you like to be Order or Chaos? \n");
+        String player1Name = sc.next();
+        this.players = new OCPlayer[2];
+        players[0] = new OCPlayer(player1Name);
+        String player2Name;
+        if (player1Name.equals("Order")) {
+            player2Name = "Chaos";
+        } else {
+            player2Name = "Order";
+        }
+        players[1] = new OCPlayer(player2Name);
         return players;
     }
     // initialize the board
@@ -39,10 +52,7 @@ public class OCBoardGame extends BoardGame{
     public boolean continueGame(Scanner sc) {
         System.out.println("Would you like to play again? Y/N");
         char choice = sc.next().charAt(0);
-        if (choice == 'Y') {
-            return true;
-        }
-        return false;
+        return choice == 'Y';
     }
 
     // processes moves for order and chaos
@@ -56,19 +66,27 @@ public class OCBoardGame extends BoardGame{
         char checker = sc.next().charAt(0);
         board.addChecker(row, col, checker);
         System.out.println(board.toString());
-        turn = (turn + 1) % 2;
 
         if (board.isWin(board.getCell(row, col))) {
             System.out.println("Congratulations " + "Order " + "! You won!");
             players[0].addScore();
+            turn = 0;
             return true;
         }
         if (board.isFull() && !board.isWin(board.getCell(row, col))) {
             System.out.println("Congratulations " + "Chaos " + "! You won!");
             players[1].addScore();
+            turn = 0;
             return true;
         }
+        turn = (turn + 1) % 2;
         return false;
+    }
+
+    // prints the game statistics after a win or a loss
+    public String printGameStatistics() {
+        return "Game Statistics: \n" + players[0].toString() + ": " + players[0].getScore() + "\n" +
+                players[1].toString() + ": " + players[1].getScore() + "\n";
     }
 
     // method that is responsible for running the game
@@ -80,7 +98,7 @@ public class OCBoardGame extends BoardGame{
         boolean playAgain = false;
         while (!playAgain){
             board.initializeBoard();
-            System.out.println("Current scores: \n" + players[0].toString() + ": " + players[0].getScore() + "\n" + players[1].toString() + ": " + players[1].getScore() + "\n");
+            System.out.println(printGameStatistics());
             while (!win) {
                 if (processMove(sc)) {
                     win = true;
@@ -89,7 +107,8 @@ public class OCBoardGame extends BoardGame{
             if (continueGame(sc)) {
                 win = false;
             } else {
-                System.out.println("Thanks for playing!");
+                System.out.println("Thanks for playing Order and Chaos!");
+                System.out.println(getPlayersStats());
                 playAgain = true;
             }
         }

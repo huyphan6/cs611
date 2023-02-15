@@ -1,12 +1,12 @@
-import java.util.*;
+public class TTTBoard extends Board{
+    int winCondition = setWinCondition(board.length);
 
-public class OCBoard extends Board{
-     int winCondition = setWinCondition(board.length-1);
-
-    public OCBoard(int size) {
+    //Constructor
+    public TTTBoard(int size) {
         super(size);
     }
 
+    //Override methods to check for wins in Tic Tac Toe
     @Override
     public boolean isHorizontalWin(Cell checker){
         int count = 0;
@@ -71,7 +71,7 @@ public class OCBoard extends Board{
     public boolean isDiagonalDownWin(Cell checker){
         int count = 0;
         for (int i = 0; i < board.length; i++) {
-            if (board[i][board.length-1-i].equals(checker) && board[i][board.length-1-i] != null) {
+            if (board[i][board.length - 1 - i].equals(checker) && board[i][board.length - 1 - i] != null) {
                 count++;
                 if (count == winCondition) {
                     return true;
@@ -85,7 +85,9 @@ public class OCBoard extends Board{
         return false;
     }
 
-    public boolean isWin(Cell checker) {
+    @Override
+    public boolean isWin(Cell checker){
         return isHorizontalWin(checker) || isVerticalWin(checker) || isDiagonalUpWin(checker) || isDiagonalDownWin(checker);
     }
+
 }

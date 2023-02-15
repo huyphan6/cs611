@@ -4,13 +4,6 @@ public abstract class Board {
     protected Cell[][] board;
     protected int winCondition;
 
-    public int getWinCondition() {
-        return winCondition;
-    }
-    public void setWinCondition(int winCondition) {
-        this.winCondition = winCondition;
-    }
-
     //Connect 4 board constructor
     public Board (int rows, int cols) {
         if (rows < 6 || cols < 7) {
@@ -28,8 +21,8 @@ public abstract class Board {
 
     //Order and Chaos board constructor
     public Board(int size) {
-        if (size < 6) {
-            throw new IllegalArgumentException("Size must be at least 6");
+        if (size < 3) {
+            throw new IllegalArgumentException("Size must be at least 3x3");
         }
         this.board = new Cell[size][size];
         this.winCondition = size-1;
@@ -38,6 +31,11 @@ public abstract class Board {
                 board[i][j] = new Cell('?');
             }
         }
+    }
+
+    public int setWinCondition(int winCondition) {
+        this.winCondition = winCondition;
+        return winCondition;
     }
 
     public Cell getCell(int x, int y) {

@@ -1,6 +1,7 @@
 
 
 public class Cell {
+    // This is the mark or piece or checker that is stored in the cell
     private char checker;
 
     public Cell(char checker) {
