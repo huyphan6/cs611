@@ -60,12 +60,12 @@ public abstract class Board {
     // to string method that prints the board and egdes
     public String toString() {
         String result = "";
-        result += " " + "—".repeat(4*(winCondition+1)) + "\n";
+        result += " " + "—".repeat(4*board[0].length) + "\n";
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 result += "| " + board[i][j].getChecker() + " ";
             }
-            result += "| \n " +"—".repeat(4*(winCondition+1)) + "\n";
+            result += "| \n " +"—".repeat(4*board[0].length) + "\n";
         }
         return result;
     }

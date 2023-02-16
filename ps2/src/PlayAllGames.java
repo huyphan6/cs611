@@ -3,11 +3,13 @@ import java.util.*;
 public class PlayAllGames {
     private OCBoardGame ocBoardGame;
     private TTTBoardGame tttBoardGame;
+    private C4BoardGame c4BoardGame;
     private Player[] players;
 
     public PlayAllGames() {
         this.ocBoardGame = new OCBoardGame();
         this.tttBoardGame = new TTTBoardGame();
+        this.c4BoardGame = new C4BoardGame();
     }
 
     public void startAllGames(Scanner sc) {
@@ -22,6 +24,10 @@ public class PlayAllGames {
         tttBoardGame.playGame(sc);
     }
 
+    public void playC4BoardGame(Scanner sc) {
+        c4BoardGame.playGame(sc);
+    }
+
     public void gamePrompter(Scanner sc) {
         System.out.println("Hello! What Game Would You Like To Play?");
         System.out.println("1. Tic Tac Toe");
@@ -34,20 +40,20 @@ public class PlayAllGames {
 
         // switch statement to choose game
         switch (gameChoice) {
-            case 1:
+            case 1 -> {
                 playAllGames.playTTTBoardGame(sc);
                 startNewSession(sc);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 playAllGames.playOCBoardGame(sc);
                 startNewSession(sc);
-                break;
-            case 3:
-                break;
-            default:
-                System.out.println("Invalid game choice.");
-                break;
             }
+            case 3 -> {
+                playAllGames.playC4BoardGame(sc);
+                startNewSession(sc);
+            }
+            default -> System.out.println("Invalid game choice.");
+        }
         }
 
     public void startNewSession(Scanner sc) {
