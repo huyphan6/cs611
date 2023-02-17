@@ -1,10 +1,10 @@
 import java.util.*;
 
 public class PlayAllGames {
-    private OCBoardGame ocBoardGame;
-    private TTTBoardGame tttBoardGame;
-    private C4BoardGame c4BoardGame;
-    private Player[] players;
+    protected OCBoardGame ocBoardGame;
+    protected TTTBoardGame tttBoardGame;
+    protected C4BoardGame c4BoardGame;
+    protected Player[] players;
 
     public PlayAllGames() {
         this.ocBoardGame = new OCBoardGame();
@@ -54,7 +54,7 @@ public class PlayAllGames {
             }
             default -> System.out.println("Invalid game choice.");
         }
-        }
+    }
 
     public void startNewSession(Scanner sc) {
         System.out.println("Would you like to play a different game? Y/N");
