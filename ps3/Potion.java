@@ -1,4 +1,7 @@
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class Potion extends Item{
@@ -28,18 +31,43 @@ public class Potion extends Item{
     }
 
     public String toString() {
-        return "Potion: " + name + ", Price: " + price + ", Level: " + level + ", Attribute Types: " + attributeTypes + ", Attribute Increase: " + attributeIncrease;
+        return "Potion: " + name + ", Price: " + price + ", Level: " + level + ", Attribute Types Affected: " + attributeTypes + ", Attribute Increase: " + attributeIncrease;
     }
 
     public static ArrayList<Potion> initPotions() {
+        String line = "";
+        String splitBy = ", ";
+        ArrayList<Potion> potions = new ArrayList<>();
+        try
+        {
+            BufferedReader br = new BufferedReader(new FileReader("Items/Potions.txt"));
+            while ((line = br.readLine()) != null)
+            {
+                String[] potion = line.split(splitBy);
 
-        Potion healing = new Potion("Healing_Potion", 250, 1, new ArrayList<String>(List.of("Health")), 100);
-        Potion strength = new Potion("Strength_Potion", 200, 1, new ArrayList<String>(List.of("Strength")), 75);
-        Potion magic = new Potion("Magic_Potion", 350, 2, new ArrayList<String>(List.of("Mana")), 100);
-        Potion luck = new Potion("Luck_Elixir", 500, 4, new ArrayList<String>(List.of("Agility")), 65);
-        Potion mermaid = new Potion("Mermaid_Tears", 850, 5, new ArrayList<String>(List.of("Health", "Mana", "Strength", "Agility")), 100);
-        Potion ambrosia = new Potion("Ambrosia", 1000, 8, new ArrayList<String>(List.of("Health", "Mana", "Strength", "Dexterity", "Defense", "Agility")), 150);
+                String name = potion[0];
+                int price = Integer.parseInt(potion[1]);
+                int level = Integer.parseInt(potion[2]);
+                ArrayList<String> attributeType = new ArrayList<String>(Arrays.asList(potion[4].split("/")));
+                int attributeIncrease = Integer.parseInt(potion[3]);
 
-        return new ArrayList<Potion>(List.of(healing, strength, magic, luck, mermaid, ambrosia));
+
+                Potion s = new Potion(name, price, level, attributeType, attributeIncrease);
+                potions.add(s);
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return potions;
+    }
+
+    public static void main (String[] args) {
+        ArrayList<Potion> potions = initPotions();
+        for (Potion p : potions) {
+            System.out.println(p);
+        }
     }
 }
