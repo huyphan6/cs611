@@ -1,5 +1,5 @@
 
-public abstract class Monster {
+public abstract class Monster implements Attackable {
 
     protected String name;
     protected int level;
@@ -69,5 +69,19 @@ public abstract class Monster {
         this.name = name;
     }
 
-
+    public void attack(Attackable target) {
+        if (target instanceof Hero h) {
+            int damage = this.damage;
+            int damageDealt = damage - defense;
+            if (damageDealt < 0) {
+                damageDealt = 0;
+            }
+            int chance = (int) (Math.random() * 100);
+            if (chance < dodge) {
+                damageDealt = 0;
+            }
+            h.setHP(h.getHP() - damageDealt);
+            System.out.println(this.name + " attacks " + h.getName() + " for " + damageDealt + " damage!");
+        }
+    }
 }

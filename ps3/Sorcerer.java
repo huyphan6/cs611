@@ -10,10 +10,10 @@ public class Sorcerer extends Hero{
         super(name, level, HP, MP, strengthValue, dexterityValue, agilityValue, gold);
     }
 
-    public static ArrayList<Sorcerer> initSorcerers() {
+    public static ArrayList<Hero> initSorcerers() {
         String line = "";
         String splitBy = ", ";
-        ArrayList<Sorcerer> sorcerers = new ArrayList<>();
+        ArrayList<Hero> sorcerers = new ArrayList<>();
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("Heroes/Sorcerers.txt"));
@@ -31,12 +31,5 @@ public class Sorcerer extends Hero{
         }
 
         return sorcerers;
-    }
-
-    public static void main (String[] args) {
-        ArrayList<Sorcerer> sorcerers = initSorcerers();
-        for (Sorcerer p : sorcerers) {
-            System.out.println(p);
-        }
     }
 }

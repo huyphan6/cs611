@@ -17,4 +17,8 @@ public class Cell {
     public boolean equals (Cell other) {
         return this.type == other.type;
     }
+
+    public String toString() {
+        return Character.toString(type);
+    }
 }

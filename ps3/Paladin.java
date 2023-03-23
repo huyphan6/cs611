@@ -9,10 +9,10 @@ public class Paladin extends Hero{
         super(name, level, HP, MP, strengthValue, dexterityValue, agilityValue, gold);
     }
 
-    public static ArrayList<Paladin> initPaladins() {
+    public static ArrayList<Hero> initPaladins() {
         String line = "";
         String splitBy = ", ";
-        ArrayList<Paladin> paladins = new ArrayList<>();
+        ArrayList<Hero> paladins = new ArrayList<>();
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("Heroes/Paladins.txt"));
@@ -30,12 +30,5 @@ public class Paladin extends Hero{
         }
 
         return paladins;
-    }
-
-    public static void main (String[] args) {
-        ArrayList<Paladin> paladins = initPaladins();
-        for (Paladin p : paladins) {
-            System.out.println(p);
-        }
     }
 }

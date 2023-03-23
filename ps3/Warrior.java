@@ -10,10 +10,10 @@ public class Warrior extends Hero {
         super(name, level, HP, MP, strengthValue, dexterityValue, agilityValue, gold);
     }
 
-    public static ArrayList<Warrior> initWarriors(){
+    public static ArrayList<Hero> initWarriors(){
         String line = "";
         String splitBy = ", ";
-        ArrayList<Warrior> warriors = new ArrayList<>();
+        ArrayList<Hero> warriors = new ArrayList<>();
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("Heroes/Warriors.txt"));
