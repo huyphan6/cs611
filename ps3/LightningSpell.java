@@ -10,10 +10,10 @@ public class LightningSpell extends Spell{
         super(name, price, level, damage, manaCost);
     }
 
-    public static ArrayList<Spell> initLightningSpells() {
+    public static ArrayList<Item> initLightningSpells() {
         String line = "";
         String splitBy = ", ";
-        ArrayList<Spell> lightningSpells = new ArrayList<>();
+        ArrayList<Item> lightningSpells = new ArrayList<>();
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("Items/LightningSpells.txt"));
@@ -31,12 +31,5 @@ public class LightningSpell extends Spell{
         }
 
         return lightningSpells;
-    }
-
-    public static void main(String[] args) {
-        ArrayList<Spell> lightningSpells = initLightningSpells();
-        for (Spell s : lightningSpells) {
-            System.out.println(s);
-        }
     }
 }

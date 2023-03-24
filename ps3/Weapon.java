@@ -33,10 +33,10 @@ public class Weapon extends Item{
         return "Weapon: " + name + ", Price: " + price + ", Level Required: " + level + ", Damage: " + damage + ", NumHandsRequired: " + numHandsRequired;
     }
 
-    public static ArrayList<Weapon> initWeapons() {
+    public static ArrayList<Item> initWeapons() {
         String line = "";
         String splitBy = ", ";
-        ArrayList<Weapon> weapons = new ArrayList<>();
+        ArrayList<Item> weapons = new ArrayList<>();
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("Items/Weaponry.txt"));

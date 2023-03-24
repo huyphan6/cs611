@@ -62,11 +62,20 @@ public abstract class Board {
         if (x < 0 || x > board.length || y < 0 || y > board.length) {
             throw new IllegalArgumentException("Coordinates are out of bounds");
         }
-        if (board[x][y].getType() == ' ') {
+        else if (board[x][y].equals(new Cell(' '))) {
             board[x][y].setType(type);
         }
         else {
             throw new IllegalArgumentException("Cell is occupied");
+        }
+    }
+
+    public void removeCell(int x, int y) {
+        if (x < 0 || x > board.length || y < 0 || y > board.length) {
+            throw new IllegalArgumentException("Coordinates are out of bounds");
+        }
+        else {
+            board[x][y].setType(' ');
         }
     }
 }

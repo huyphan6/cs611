@@ -34,10 +34,10 @@ public class Potion extends Item{
         return "Potion: " + name + ", Price: " + price + ", Level: " + level + ", Attribute Types Affected: " + attributeTypes + ", Attribute Increase: " + attributeIncrease;
     }
 
-    public static ArrayList<Potion> initPotions() {
+    public static ArrayList<Item> initPotions() {
         String line = "";
         String splitBy = ", ";
-        ArrayList<Potion> potions = new ArrayList<>();
+        ArrayList<Item> potions = new ArrayList<>();
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("Items/Potions.txt"));
@@ -62,12 +62,5 @@ public class Potion extends Item{
         }
 
         return potions;
-    }
-
-    public static void main (String[] args) {
-        ArrayList<Potion> potions = initPotions();
-        for (Potion p : potions) {
-            System.out.println(p);
-        }
     }
 }

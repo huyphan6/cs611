@@ -4,46 +4,32 @@ public class MHBoardGame extends BoardGame{
 
     private MHBoard board;
     private ArrayList<Hero> heroTeam;
-    private int currentX;
-    private int currentY;
+    private boolean continueGame = true;
+    private Market market;
+    private Inventory inventory;
 
     private MHBoardGame(int size, ArrayList<Hero> heroTeam) {
         this.board = new MHBoard(size);
         this.heroTeam = heroTeam;
     }
-
     public MHBoard getBoard() {
         return board;
     }
-
     public void setBoard(MHBoard board) {
         this.board = board;
     }
-
     public ArrayList<Hero> getHeroTeam() {
         return heroTeam;
     }
-
     public void setHeroTeam(ArrayList<Hero> heroTeam) {
         this.heroTeam = heroTeam;
     }
-
-    public int getCurrentX() {
-        return currentX;
+    public boolean isContinueGame() {
+        return continueGame;
     }
-
-    public void setCurrentX(int currentX) {
-        this.currentX = currentX;
+    public void setContinueGame(boolean continueGame) {
+        this.continueGame = continueGame;
     }
-
-    public int getCurrentY() {
-        return currentY;
-    }
-
-    public void setCurrentY(int currentY) {
-        this.currentY = currentY;
-    }
-
     @Override
     public MHBoard initBoard(Scanner sc) {
         System.out.println("Initializing the board...");
@@ -51,7 +37,7 @@ public class MHBoardGame extends BoardGame{
         int boardSize;
 
         do {
-            System.out.println("Please enter a integer 8 or greater!");
+            System.out.println("Please enter a integer 8 or greater!\n");
             while (!sc.hasNextInt()) {
                 System.out.println("That's not a integer! Please Try Again!");
                 sc.next();
@@ -93,8 +79,8 @@ public class MHBoardGame extends BoardGame{
         }
 
         board.setCell(x, y, 'X');
-        setCurrentX(x);
-        setCurrentY(y);
+        board.setCurrentX(x);
+        board.setCurrentY(y);
         System.out.println(board);
 
         return board;
@@ -144,7 +130,7 @@ public class MHBoardGame extends BoardGame{
                         System.out.println(j + ": " + paladins.get(j).toString());
                     }
 
-                    System.out.println("\nWhich paladin would you like to choose? \n");
+                    System.out.println(ColoredText.getAnsiReset() +"\nWhich paladin would you like to choose? \n");
                     int paladinChoice;
                     do {
                         System.out.println("Please enter a integer between " + 0 + "-" + (paladins.size() - 1) + "!");
@@ -166,7 +152,7 @@ public class MHBoardGame extends BoardGame{
                         System.out.println(j + ": " + warriors.get(j).toString());
                     }
 
-                    System.out.println("\nWhich warrior would you like to choose? \n");
+                    System.out.println(ColoredText.getAnsiReset() + "\nWhich warrior would you like to choose? \n");
                     int warriorChoice;
                     do {
                         System.out.println("Please enter a integer between " + 0 + "-" + (warriors.size() - 1) + "!");
@@ -188,7 +174,7 @@ public class MHBoardGame extends BoardGame{
                         System.out.println(j + ": " + sorcerers.get(j).toString());
                     }
 
-                    System.out.println("\nWhich sorcerer would you like to choose? \n");
+                    System.out.println(ColoredText.getAnsiReset() + "\nWhich sorcerer would you like to choose? \n");
                     int sorcererChoice;
                     do {
                         System.out.println("Please enter a integer between " + 0 + "-" + (sorcerers.size() - 1) + "!");
@@ -207,21 +193,28 @@ public class MHBoardGame extends BoardGame{
             }
         }
 
-        System.out.println(ColoredText.getAnsiReset() + "Here is your team's lineup!: " + heroTeam);
+        System.out.println(ColoredText.getAnsiReset() + "Here is your team's lineup!: \n" + heroTeam + "\n");
 
         return heroTeam;
     }
 
     public void playGame(Scanner sc) {
-        System.out.println(ColoredText.getAnsiPurple() + ArtMessages.getWelcome() + ColoredText.getAnsiReset());
+        System.out.println(ColoredText.getAnsiPurple() + ArtMessages.getWelcome() + ColoredText.getAnsiReset() + "\nWelcome To Monsters and Heroes! \n");
         board = initBoard(sc);
         heroTeam = initHeroTeam(sc);
+
+        String validMoves = Controller.printMoves();
+        System.out.println(board);
+
+        while (continueGame) {
+            Controller.processMove(sc, board);
+        }
     }
 
     public static void main (String[] args) {
-//        Scanner sc = new Scanner(System.in);
-//        MHBoardGame game = new MHBoardGame(8, null);
-//        game.initBoard(sc);
+        Scanner sc = new Scanner(System.in);
+        MHBoardGame game = new MHBoardGame(8, null);
+        game.playGame(sc);
 
     }
 }

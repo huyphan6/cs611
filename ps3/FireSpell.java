@@ -9,10 +9,10 @@ public class FireSpell extends Spell{
         super(name, price, level, damage, manaCost);
     }
 
-    public static ArrayList<Spell> initFireSpells() {
+    public static ArrayList<Item> initFireSpells() {
         String line = "";
         String splitBy = ", ";
-        ArrayList<Spell> fireSpells = new ArrayList<>();
+        ArrayList<Item> fireSpells = new ArrayList<>();
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("Items/FireSpells.txt"));

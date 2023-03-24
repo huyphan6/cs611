@@ -11,10 +11,10 @@ public class IceSpell extends Spell{
         super(name, price, level, damage, manaCost);
     }
 
-    public static ArrayList<Spell> initIceSpells() {
+    public static ArrayList<Item> initIceSpells() {
         String line = "";
         String splitBy = ", ";
-        ArrayList<Spell> iceSpells = new ArrayList<>();
+        ArrayList<Item> iceSpells = new ArrayList<>();
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("Items/IceSpells.txt"));

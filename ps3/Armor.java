@@ -23,10 +23,10 @@ public class Armor extends Item{
         return "Armor: " + name + ", Price: " + price + ", Level Required: " + level + ", Damage Reduction: " + damageReduction;
     }
 
-    public static ArrayList<Armor> initArmor() {
+    public static ArrayList<Item> initArmors() {
         String line = "";
         String splitBy = ", ";
-        ArrayList<Armor> armors = new ArrayList<>();
+        ArrayList<Item> armors = new ArrayList<>();
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("Items/Armory.txt"));
