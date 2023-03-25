@@ -1,5 +1,6 @@
 
 import java.util.*;
+
 public class Market {
     private ArrayList<Item> potions = Potion.initPotions();
     private ArrayList<Item> weapons = Weapon.initWeapons();
@@ -12,12 +13,31 @@ public class Market {
         return ColoredText.getAnsiCyan() + ArtMessages.getWelcomeToMarket() + ColoredText.getAnsiReset();
     }
 
-    public void buyAndSell(Scanner sc, ArrayList<Hero> heroTeam, Inventory inventory) {
+    public void enterMarket(Scanner sc, ArrayList<Hero> heroTeam) {
         System.out.println(welcomeToMarket());
-        System.out.println("\n Would you like to buy or sell? (b/s)");
+
+        for (int i = 0; i < heroTeam.size(); i++) {
+            System.out.println(ColoredText.getAnsiCyan() + "Hero " + (i + 1) + ": " + heroTeam.get(i) + ColoredText.getAnsiReset());
+        }
+
+        System.out.println("\nWhich hero would you like to buy or sell for? (1-" + heroTeam.size() + ")");
+
+        int heroChoice;
+        do {
+            System.out.println("Please enter a integer between " + 1 + "-" + heroTeam.size() + "!");
+            while (!sc.hasNextInt()) {
+                System.out.println("That's not a integer! Please Try Again!");
+                sc.next();
+            }
+            heroChoice = sc.nextInt();
+        } while (heroChoice > heroTeam.size() || heroChoice < 1);
+
+        System.out.println("You chose Hero: " + heroChoice + ", " + heroTeam.get(heroChoice - 1));
+
+        System.out.println("\nWould you like to buy, sell or exit? (b/s/e)");
 
         char buyOrSell;
-        while (!sc.hasNext("[bsBS]")) {
+        while (!sc.hasNext("[bseBSE]")) {
             System.out.println("That's an invalid choice! Please Try Again!");
             sc.next();
         }
@@ -47,142 +67,339 @@ public class Market {
                 switch (buyChoice) {
                     case 1:
                         System.out.println("Potions \n");
-                        for (int i = 0; i < potions.size(); i++) {
-                            System.out.println("[" + i + "]: " + potions.get(i).toString());
+                        for (int i = 1; i < potions.size() + 1; i++) {
+                            System.out.println("[" + i + "]: " + potions.get(i - 1).toString());
                         }
 
                         System.out.println("Which potion would you like to buy? \n");
-                        int potionChoice;
-                        do {
-                            System.out.println("Please enter a integer between " + 0 + "-" + (potions.size() - 1) + "!");
-                            while (!sc.hasNextInt()) {
-                                System.out.println("That's not a integer! Please Try Again!");
-                                sc.next();
+                        int potionChoice = 0;
+                        while (potionChoice > potions.size() || potionChoice < 1) {
+                            do {
+                                System.out.println("Please enter a integer between " + 1 + "-" + (potions.size()) + "!");
+                                while (!sc.hasNextInt()) {
+                                    System.out.println("That's not a integer! Please Try Again!");
+                                    sc.next();
+                                }
+                                potionChoice = sc.nextInt();
+                            } while (potionChoice > potions.size() || potionChoice < 1);
+                            // *************** add BUYING logic here ***************
+                            while (heroTeam.get(heroChoice - 1).getGold() < potions.get(potionChoice - 1).getPrice()) {
+                                System.out.println("You don't have enough gold to buy this item!\n");
+                                for (int i = 1; i < potions.size() + 1; i++) {
+                                    System.out.println("[" + i + "]: " + potions.get(i - 1).toString());
+                                }
+                                do {
+                                    System.out.println("Please enter a integer between " + 1 + "-" + (potions.size()) + "!");
+                                    while (!sc.hasNextInt()) {
+                                        System.out.println("That's not a integer! Please Try Again!");
+                                        sc.next();
+                                    }
+                                } while (potionChoice > potions.size() || potionChoice < 1);
+                                potionChoice = sc.nextInt();
                             }
-                            potionChoice = sc.nextInt();
-                        } while (potionChoice > potions.size()-1 || potionChoice < 0);
+                        }
 
-                        System.out.println("You chose: " + potions.get(potionChoice).toString());
+                        System.out.println("You chose: " + potions.get(potionChoice - 1).toString());
 
-                        // *************** add BUYING logic here ***************
+                        // add item to the hero's inventory
+                        heroTeam.get(heroChoice - 1).getInventory().addItem(potions.get(potionChoice - 1));
+                        System.out.println("Successfully added " + potions.get(potionChoice - 1).toString() + " to your inventory!\n");
+                        System.out.println("Your inventory now contains: " + heroTeam.get(heroChoice - 1).getInventory() + "\n");
+
+                        // remove gold from hero's gold
+                        heroTeam.get(heroChoice - 1).setGold(heroTeam.get(heroChoice - 1).getGold() - potions.get(potionChoice - 1).getPrice());
+                        System.out.println("You now have " + heroTeam.get(heroChoice - 1).getGold() + " gold left!\n");
+
                         break;
                     case 2:
                         System.out.println("Weapons \n");
-                        for (int i = 0; i < weapons.size(); i++) {
-                            System.out.println("[" + i + "]: " + weapons.get(i).toString());
+                        for (int i = 1; i < weapons.size() + 1; i++) {
+                            System.out.println("[" + i + "]: " + weapons.get(i - 1).toString());
                         }
 
                         System.out.println("Which weapon would you like to buy? \n");
                         int weaponChoice;
                         do {
-                            System.out.println("Please enter a integer between " + 0 + "-" + (weapons.size() - 1) + "!");
-                            while (!sc.hasNextInt()) {
-                                System.out.println("That's not a integer! Please Try Again!");
-                                sc.next();
+                            do {
+                                System.out.println("Please enter a integer between " + 1 + "-" + (weapons.size()) + "!");
+                                while (!sc.hasNextInt()) {
+                                    System.out.println("That's not a integer! Please Try Again!");
+                                    sc.next();
+                                }
+                                weaponChoice = sc.nextInt();
+                            } while (weaponChoice > weapons.size() || weaponChoice < 1);
+
+                            // *************** add BUYING logic here ***************
+                            while (heroTeam.get(heroChoice - 1).getGold() < weapons.get(weaponChoice - 1).getPrice()) {
+                                System.out.println("You don't have enough gold to buy this item!\n");
+                                for (int i = 1; i < weapons.size() + 1; i++) {
+                                    System.out.println("[" + i + "]: " + weapons.get(i - 1).toString());
+                                }
+                                do {
+                                    System.out.println("Please enter a integer between " + 1 + "-" + (weapons.size()) + "!");
+                                    while (!sc.hasNextInt()) {
+                                        System.out.println("That's not a integer! Please Try Again!");
+                                        sc.next();
+                                    }
+                                } while (weaponChoice > weapons.size() || weaponChoice < 1);
+                                weaponChoice = sc.nextInt();
                             }
-                            weaponChoice = sc.nextInt();
-                        } while (weaponChoice > weapons.size()-1 || weaponChoice < 0);
+                        } while (weaponChoice > weapons.size() || weaponChoice < 1);
 
-                        System.out.println("You chose: " + weapons.get(weaponChoice).toString());
+                        System.out.println("You chose: " + weapons.get(weaponChoice - 1).toString());
 
-                        // *************** add BUYING logic here ***************
+                        // add item to the hero's inventory
+                        heroTeam.get(heroChoice - 1).getInventory().addItem(weapons.get(weaponChoice - 1));
+                        System.out.println("Successfully added " + weapons.get(weaponChoice - 1).toString() + " to your inventory!\n");
+                        System.out.println("Your inventory now contains: " + heroTeam.get(heroChoice - 1).getInventory().toString() + "\n");
+
+                        // remove gold from hero's gold
+                        heroTeam.get(heroChoice - 1).setGold(heroTeam.get(heroChoice - 1).getGold() - weapons.get(weaponChoice - 1).getPrice());
+                        System.out.println("You now have " + heroTeam.get(heroChoice - 1).getGold() + " gold left!\n");
+
                         break;
                     case 3:
                         System.out.println("Armors \n");
-                        for (int i = 0; i < armors.size(); i++) {
-                            System.out.println("[" + i + "]: " + armors.get(i).toString());
+                        for (int i = 1; i < armors.size() + 1; i++) {
+                            System.out.println("[" + i + "]: " + armors.get(i - 1).toString());
                         }
 
                         System.out.println("Which armor would you like to buy? \n");
                         int armorChoice;
                         do {
-                            System.out.println("Please enter a integer between " + 0 + "-" + (armors.size() - 1) + "!");
-                            while (!sc.hasNextInt()) {
-                                System.out.println("That's not a integer! Please Try Again!");
-                                sc.next();
+                            do {
+                                System.out.println("Please enter a integer between " + 1 + "-" + (armors.size()) + "!");
+                                while (!sc.hasNextInt()) {
+                                    System.out.println("That's not a integer! Please Try Again!");
+                                    sc.next();
+                                }
+                                armorChoice = sc.nextInt();
+                            } while (armorChoice > armors.size() || armorChoice < 1);
+                            // *************** add BUYING logic here ***************
+                            while (heroTeam.get(heroChoice - 1).getGold() < armors.get(armorChoice - 1).getPrice()) {
+                                System.out.println("You don't have enough gold to buy this item!\n");
+                                for (int i = 1; i < armors.size() + 1; i++) {
+                                    System.out.println("[" + i + "]: " + armors.get(i - 1).toString());
+                                }
+                                do {
+                                    System.out.println("Please enter a integer between " + 1 + "-" + (armors.size()) + "!");
+                                    while (!sc.hasNextInt()) {
+                                        System.out.println("That's not a integer! Please Try Again!");
+                                        sc.next();
+                                    }
+                                } while (armorChoice > armors.size() || armorChoice < 1);
+                                armorChoice = sc.nextInt();
                             }
-                            armorChoice = sc.nextInt();
-                        } while (armorChoice > armors.size()-1 || armorChoice < 0);
+                        } while (armorChoice > armors.size() || armorChoice < 1);
 
-                        System.out.println("You chose: " + armors.get(armorChoice).toString());
+                        System.out.println("You chose: " + armors.get(armorChoice - 1).toString());
 
-                        // *************** add BUYING logic here ***************
+                        // add item to the hero's inventory
+                        heroTeam.get(heroChoice - 1).getInventory().addItem(armors.get(armorChoice - 1));
+                        System.out.println("Successfully added " + armors.get(armorChoice - 1).toString() + " to your inventory!\n");
+                        System.out.println("Your inventory now contains: " + heroTeam.get(heroChoice - 1).getInventory().toString() + "\n");
+
+                        // remove gold from hero's gold
+                        heroTeam.get(heroChoice - 1).setGold(heroTeam.get(heroChoice - 1).getGold() - armors.get(armorChoice - 1).getPrice());
+                        System.out.println("You now have " + heroTeam.get(heroChoice - 1).getGold() + " gold left!\n");
+
                         break;
                     case 4:
                         System.out.println("Ice Spells \n");
-                        for (int i = 0; i < IceSpells.size(); i++) {
-                            System.out.println("[" + i + "]: " + IceSpells.get(i).toString());
+                        for (int i = 1; i < IceSpells.size() + 1; i++) {
+                            System.out.println("[" + i + "]: " + IceSpells.get(i - 1).toString());
                         }
 
                         System.out.println("Which Ice Spell would you like to buy? \n");
                         int IceSpellChoice;
                         do {
-                            System.out.println("Please enter a integer between " + 0 + "-" + (IceSpells.size() - 1) + "!");
-                            while (!sc.hasNextInt()) {
-                                System.out.println("That's not a integer! Please Try Again!");
-                                sc.next();
+                            do {
+                                System.out.println("Please enter a integer between " + 1 + "-" + (IceSpells.size()) + "!");
+                                while (!sc.hasNextInt()) {
+                                    System.out.println("That's not a integer! Please Try Again!");
+                                    sc.next();
+                                }
+                                IceSpellChoice = sc.nextInt();
+                            } while (IceSpellChoice >  IceSpells.size() || IceSpellChoice < 1);
+                            // *************** add BUYING logic here ***************
+                            while (heroTeam.get(heroChoice - 1).getGold() < IceSpells.get(IceSpellChoice - 1).getPrice()) {
+                                System.out.println("You don't have enough gold to buy this item!\n");
+                                for (int i = 1; i < IceSpells.size() + 1; i++) {
+                                    System.out.println("[" + i + "]: " + IceSpells.get(i - 1).toString());
+                                }
+                                do {
+                                    System.out.println("Please enter a integer between " + 1 + "-" + (IceSpells.size()) + "!");
+                                    while (!sc.hasNextInt()) {
+                                        System.out.println("That's not a integer! Please Try Again!");
+                                        sc.next();
+                                    }
+                                } while (IceSpellChoice > IceSpells.size() || IceSpellChoice < 1);
+                                IceSpellChoice = sc.nextInt();
                             }
-                            IceSpellChoice = sc.nextInt();
-                        } while (IceSpellChoice > IceSpells.size()-1 || IceSpellChoice < 0);
+                        }
+                        while (IceSpellChoice > IceSpells.size() || IceSpellChoice < 1);
 
-                        System.out.println("You chose: " + IceSpells.get(IceSpellChoice).toString());
+                        System.out.println("You chose: " + IceSpells.get(IceSpellChoice - 1).toString());
 
-                        // *************** add BUYING logic here ***************
+                        // add item to the hero's inventory
+                        heroTeam.get(heroChoice-1).getInventory().addItem(IceSpells.get(IceSpellChoice - 1));
+                        System.out.println("Successfully added " + IceSpells.get(IceSpellChoice - 1).toString() + " to your inventory!\n");
+                        System.out.println("Your inventory now contains: " + heroTeam.get(heroChoice - 1).getInventory().toString() + "\n");
+
+                        // remove gold from hero's gold
+                        heroTeam.get(heroChoice - 1).setGold(heroTeam.get(heroChoice - 1).getGold() - IceSpells.get(IceSpellChoice - 1).getPrice());
+                        System.out.println("You now have " + heroTeam.get(heroChoice - 1).getGold() + " gold left!\n");
+
                         break;
                     case 5:
                         System.out.println("Fire Spells \n");
-                        for (int i = 0; i < FireSpells.size(); i++) {
-                            System.out.println("[" + i + "]: " + FireSpells.get(i).toString());
+                        for (int i = 1; i < FireSpells.size() + 1; i++) {
+                            System.out.println("[" + i + "]: " + FireSpells.get(i - 1).toString());
                         }
 
                         System.out.println("Which Fire Spell would you like to buy? \n");
                         int FireSpellChoice;
                         do {
-                            System.out.println("Please enter a integer between " + 0 + "-" + (FireSpells.size() - 1) + "!");
-                            while (!sc.hasNextInt()) {
-                                System.out.println("That's not a integer! Please Try Again!");
-                                sc.next();
+                            do {
+                                System.out.println("Please enter a integer between " + 1 + "-" + (FireSpells.size()) + "!");
+                                while (!sc.hasNextInt()) {
+                                    System.out.println("That's not a integer! Please Try Again!");
+                                    sc.next();
+                                }
+                                FireSpellChoice = sc.nextInt();
+                            } while (FireSpellChoice > FireSpells.size() || FireSpellChoice < 1);
+                            // *************** add BUYING logic here ***************
+                            while (heroTeam.get(heroChoice - 1).getGold() < FireSpells.get(FireSpellChoice - 1).getPrice()) {
+                                System.out.println("You don't have enough gold to buy this item!\n");
+                                for (int i = 1; i < FireSpells.size() + 1; i++) {
+                                    System.out.println("[" + i + "]: " + FireSpells.get(i - 1).toString());
+                                }
+                                do {
+                                    System.out.println("Please enter a integer between " + 1 + "-" + (FireSpells.size()) + "!");
+                                    while (!sc.hasNextInt()) {
+                                        System.out.println("That's not a integer! Please Try Again!");
+                                        sc.next();
+                                    }
+                                } while (FireSpellChoice > FireSpells.size() || FireSpellChoice < 1);
+                                FireSpellChoice = sc.nextInt();
                             }
-                            FireSpellChoice = sc.nextInt();
-                        } while (FireSpellChoice > FireSpells.size()-1 || FireSpellChoice < 0);
+                        } while (FireSpellChoice > FireSpells.size() || FireSpellChoice < 1);
 
-                        System.out.println("You chose: " + FireSpells.get(FireSpellChoice).toString());
+                        System.out.println("You chose: " + FireSpells.get(FireSpellChoice - 1).toString());
 
-                        // *************** add BUYING logic here ***************
+                        // add item to the hero's inventory
+                        heroTeam.get(heroChoice-1).getInventory().addItem(FireSpells.get(FireSpellChoice - 1));
+                        System.out.println("Successfully added " + FireSpells.get(FireSpellChoice - 1).toString() + " to your inventory!\n");
+                        System.out.println("Your inventory now contains: " + heroTeam.get(heroChoice - 1).getInventory().toString() + "\n");
+
+                        // remove gold from hero's gold
+                        heroTeam.get(heroChoice - 1).setGold(heroTeam.get(heroChoice - 1).getGold() - FireSpells.get(FireSpellChoice - 1).getPrice());
+                        System.out.println("You now have " + heroTeam.get(heroChoice - 1).getGold() + " gold left!\n");
+
                         break;
                     case 6:
                         System.out.println("Lightning Spells \n");
-                        for (int i = 0; i < LightningSpells.size(); i++) {
-                            System.out.println("[" + i + "]: " + LightningSpells.get(i).toString());
+                        for (int i = 1; i < LightningSpells.size() + 1; i++) {
+                            System.out.println("[" + i + "]: " + LightningSpells.get(i - 1).toString());
                         }
 
                         System.out.println("Which Lightning Spell would you like to buy? \n");
                         int LightningSpellChoice;
                         do {
-                            System.out.println("Please enter a integer between " + 0 + "-" + (LightningSpells.size() - 1) + "!");
-                            while (!sc.hasNextInt()) {
-                                System.out.println("That's not a integer! Please Try Again!");
-                                sc.next();
+                            do {
+                                System.out.println("Please enter a integer between " + 1 + "-" + (LightningSpells.size()) + "!");
+                                while (!sc.hasNextInt()) {
+                                    System.out.println("That's not a integer! Please Try Again!");
+                                    sc.next();
+                                }
+                                LightningSpellChoice = sc.nextInt();
+                            } while (LightningSpellChoice > LightningSpells.size() || LightningSpellChoice < 1);
+                            // *************** add BUYING logic here ***************
+                            while (heroTeam.get(heroChoice - 1).getGold() < LightningSpells.get(LightningSpellChoice - 1).getPrice()) {
+                                System.out.println("You don't have enough gold to buy this item!\n");
+                                for (int i = 1; i < LightningSpells.size() + 1; i++) {
+                                    System.out.println("[" + i + "]: " + LightningSpells.get(i - 1).toString());
+                                }
+                                do {
+                                    System.out.println("Please enter a integer between " + 1 + "-" + (LightningSpells.size()) + "!");
+                                    while (!sc.hasNextInt()) {
+                                        System.out.println("That's not a integer! Please Try Again!");
+                                        sc.next();
+                                    }
+                                } while (LightningSpellChoice > LightningSpells.size() || LightningSpellChoice < 1);
+                                LightningSpellChoice = sc.nextInt();
                             }
-                            LightningSpellChoice = sc.nextInt();
-                        } while (LightningSpellChoice > LightningSpells.size()-1 || LightningSpellChoice < 0);
+                        } while (LightningSpellChoice > LightningSpells.size() || LightningSpellChoice < 1);
 
-                        System.out.println("You chose: " + LightningSpells.get(LightningSpellChoice).toString());
+                        System.out.println("You chose: " + LightningSpells.get(LightningSpellChoice - 1).toString());
 
-                        // *************** add BUYING logic here ***************
+                        // add item to the hero's inventory
+                        heroTeam.get(heroChoice-1).getInventory().addItem(LightningSpells.get(LightningSpellChoice - 1));
+                        System.out.println("Successfully added " + LightningSpells.get(LightningSpellChoice - 1).toString() + " to your inventory!\n");
+                        System.out.println("Your inventory now contains: " + heroTeam.get(heroChoice - 1).getInventory().toString() + "\n");
+
+                        // remove gold from hero's gold
+                        heroTeam.get(heroChoice - 1).setGold(heroTeam.get(heroChoice - 1).getGold() - LightningSpells.get(LightningSpellChoice - 1).getPrice());
+                        System.out.println("You now have " + heroTeam.get(heroChoice - 1).getGold() + " gold left!\n");
+
                         break;
                 }
+                break;
             case 'S':
                 /// sell logic
-        }
+                System.out.println("What would you like to sell from your inventory? \n");
+                System.out.println("Your inventory contains: " + heroTeam.get(heroChoice - 1).getInventory() + "\n");
 
+                for (int i = 1; i < heroTeam.get(heroChoice - 1).getInventory().getItems().size() + 1; i++) {
+                    System.out.println("[" + i + "]: " + heroTeam.get(heroChoice - 1).getInventory().getItems().get(i - 1).toString());
+                }
+
+                System.out.println("Which item would you like to sell? \n");
+                int itemChoice;
+                do {
+                    System.out.println("Please enter a integer between " + 1 + "-" + (heroTeam.get(heroChoice - 1).getInventory().getItems().size()) + "!");
+                    while (!sc.hasNextInt()) {
+                        System.out.println("That's not a integer! Please Try Again!");
+                        sc.next();
+                    }
+                    itemChoice = sc.nextInt();
+                } while (itemChoice > heroTeam.get(heroChoice - 1).getInventory().getItems().size() || itemChoice < 1);
+
+                System.out.println("You're choosing to sell: " + heroTeam.get(heroChoice - 1).getInventory().getItems().get(itemChoice - 1) + "\n");
+
+                // add gold to hero's gold
+                heroTeam.get(heroChoice - 1).setGold(heroTeam.get(heroChoice - 1).getGold() + heroTeam.get(heroChoice - 1).getInventory().getItems().get(itemChoice - 1).getPrice());
+                System.out.println("Here is your updated inventory: " + heroTeam.get(heroChoice - 1).getInventory().toString() + "\n");
+                System.out.println("You now have " + heroTeam.get(heroChoice - 1).getGold() + " gold!\n");
+
+                break;
+            case 'E':
+                System.out.println("Exiting Market");
+                break;
+        }
     }
 
     public static void main(String[] args) {
         Market m = new Market();
         Scanner sc = new Scanner(System.in);
         ArrayList<Hero> heroTeam = new ArrayList<Hero>();
-        Inventory inventory = new Inventory(10);
-        m.buyAndSell(sc, heroTeam, inventory);
+        heroTeam.add(new Paladin("HUY", 3, 100, 100, 100, 100, 100, 2000, new Inventory()));
+        heroTeam.add(new Warrior("JEN", 3, 100, 100, 100, 100, 100, 200, new Inventory()));
+        Weapon w = new Weapon("Sword", 100, 2, 200, 1);
+        heroTeam.get(0).getInventory().addItem(w);
+        heroTeam.get(1).getInventory().addItem(w);
+        Inventory inventory = new Inventory();
+        m.enterMarket(sc, heroTeam);
+
+//        Weapon w = new Weapon("Sword", 100, 2, 200, 1);
+//        ArrayList<Hero> heroTeam = new ArrayList<Hero>();
+//        heroTeam.add(new Paladin("HUY", 3, 100, 100, 100, 100, 100, 2000, new Inventory()));
+//        heroTeam.add(new Warrior("JEN", 3, 100, 100, 100, 100, 100, 100, new Inventory()));
+//
+//        System.out.println(heroTeam.get(0).getInventory());
+//        heroTeam.get(0).getInventory().addItem(w);
+//        System.out.println(heroTeam.get(0).getInventory());
+
+
     }
 }

@@ -1,5 +1,3 @@
-
-import java.util.*;
 public abstract class Hero implements Attackable {
     protected String name;
     protected int level;
@@ -11,7 +9,7 @@ public abstract class Hero implements Attackable {
     protected int gold;
     protected Inventory inventory;
 
-    public Hero(String name, int level, int HP, int MP, int strengthValue, int dexterityValue, int agilityValue, int gold) {
+    public Hero(String name, int level, int HP, int MP, int strengthValue, int dexterityValue, int agilityValue, int gold, Inventory inventory) {
         this.name = name;
         this.level = level;
         this.HP = HP;
@@ -20,11 +18,12 @@ public abstract class Hero implements Attackable {
         this.dexterityValue = dexterityValue;
         this.agilityValue = agilityValue;
         this.gold = gold;
+        this.inventory = inventory;
     }
 
     public String toString() {
-        return "{" + "Name: " + name + " Level: " + level + " HP: " + HP + " MP: " + MP + " Strength: " + strengthValue +
-                " Dexterity: " + dexterityValue + " Agility: " + agilityValue + " Gold: " + gold + "}";
+        return "{" + "Name: " + name + ", Level: " + level + ", HP: " + HP + ", MP: " + MP + ", Strength: " + strengthValue +
+                ", Dexterity: " + dexterityValue + ", Agility: " + agilityValue + ", Gold: " + gold + ", Inventory: " + inventory + "}";
     }
 
     public String getName() {
@@ -81,6 +80,10 @@ public abstract class Hero implements Attackable {
 
     public void setGold(int gold) {
         this.gold = gold;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     public void attack(Attackable target) {

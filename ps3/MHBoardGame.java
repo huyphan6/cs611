@@ -202,18 +202,20 @@ public class MHBoardGame extends BoardGame{
         System.out.println(ColoredText.getAnsiPurple() + ArtMessages.getWelcome() + ColoredText.getAnsiReset() + "\nWelcome To Monsters and Heroes! \n");
         board = initBoard(sc);
         heroTeam = initHeroTeam(sc);
+        Market market = new Market();
 
         String validMoves = Controller.printMoves();
         System.out.println(board);
 
         while (continueGame) {
-            Controller.processMove(sc, board);
+            Controller.processMove(sc, board, market, heroTeam);
         }
     }
 
     public static void main (String[] args) {
         Scanner sc = new Scanner(System.in);
         MHBoardGame game = new MHBoardGame(8, null);
+        Market market = new Market();
         game.playGame(sc);
 
     }

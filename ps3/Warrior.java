@@ -6,8 +6,8 @@ import java.util.*;
 
 // Favored on strength and agility
 public class Warrior extends Hero {
-    public Warrior (String name, int level, int HP, int MP, int strengthValue, int dexterityValue, int agilityValue, int gold) {
-        super(name, level, HP, MP, strengthValue, dexterityValue, agilityValue, gold);
+    public Warrior (String name, int level, int HP, int MP, int strengthValue, int dexterityValue, int agilityValue, int gold, Inventory inventory) {
+        super(name, level, HP, MP, strengthValue, dexterityValue, agilityValue, gold, inventory);
     }
 
     public static ArrayList<Hero> initWarriors(){
@@ -21,7 +21,7 @@ public class Warrior extends Hero {
             {
                 String[] warrior = line.split(splitBy);    // use comma as separator
 
-                Warrior w = new Warrior(warrior[0], 1, 100, Integer.parseInt(warrior[1]), Integer.parseInt(warrior[2]), Integer.parseInt(warrior[3]), Integer.parseInt(warrior[4]), Integer.parseInt(warrior[5]));
+                Warrior w = new Warrior(warrior[0], 1, 100, Integer.parseInt(warrior[1]), Integer.parseInt(warrior[2]), Integer.parseInt(warrior[3]), Integer.parseInt(warrior[4]), Integer.parseInt(warrior[5]), new Inventory());
                 warriors.add(w);
             }
         }

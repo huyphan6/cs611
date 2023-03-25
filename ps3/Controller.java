@@ -6,7 +6,7 @@ public class Controller {
         return "W: Move Up \nA: Move Left \nS: Move Down  \nD: Move Right \nI: Show Info \nM: Enter Market \nQ: Quit";
     }
 
-    public static boolean moveUp(MHBoard board) {
+    public static boolean moveUp(MHBoard board, Market market, ArrayList<Hero> heroTeam) {
         int currX = board.getCurrentX();
         int currY = board.getCurrentY();
         if (currX == board.getSize() - 1) {
@@ -21,6 +21,10 @@ public class Controller {
             board.removeCell(board.getCurrentX(), board.getCurrentY());
             board.setCurrentX(currX + 1);
             System.out.println("You have reached the market!");
+
+            Scanner sc = new Scanner(System.in);
+            market.enterMarket(sc, heroTeam);
+
             return true;
         }
         else {
@@ -34,7 +38,7 @@ public class Controller {
         }
     }
 
-    public static boolean moveDown(MHBoard board) {
+    public static boolean moveDown(MHBoard board, Market market, ArrayList<Hero> heroTeam) {
         int currX = board.getCurrentX();
         int currY = board.getCurrentY();
         if (currX == 0) {
@@ -49,6 +53,10 @@ public class Controller {
             board.removeCell(board.getCurrentX(), board.getCurrentY());
             board.setCurrentX(currX - 1);
             System.out.println("You have reached the market!");
+
+            Scanner sc = new Scanner(System.in);
+            market.enterMarket(sc, heroTeam);
+
             return true;
         }
         else {
@@ -62,7 +70,7 @@ public class Controller {
         }
     }
 
-    public static boolean moveLeft(MHBoard board) {
+    public static boolean moveLeft(MHBoard board, Market market, ArrayList<Hero> heroTeam) {
         int currX = board.getCurrentX();
         int currY = board.getCurrentY();
         if (currY == 0) {
@@ -77,6 +85,10 @@ public class Controller {
             board.removeCell(board.getCurrentX(), board.getCurrentY());
             board.setCurrentY(currY - 1);
             System.out.println("You have reached the market!");
+
+            Scanner sc = new Scanner(System.in);
+            market.enterMarket(sc, heroTeam);
+
             return true;
         }
         else {
@@ -90,7 +102,7 @@ public class Controller {
         }
     }
 
-    public static boolean moveRight(MHBoard board) {
+    public static boolean moveRight(MHBoard board, Market market, ArrayList<Hero> heroTeam) {
         int currX = board.getCurrentX();
         int currY = board.getCurrentY();
         if (currY == board.getSize() - 1) {
@@ -105,6 +117,10 @@ public class Controller {
             board.removeCell(board.getCurrentX(), board.getCurrentY());
             board.setCurrentY(currY + 1);
             System.out.println("You have reached the market!");
+
+            Scanner sc = new Scanner(System.in);
+            market.enterMarket(sc, heroTeam);
+
             return true;
         }
         else {
@@ -128,7 +144,7 @@ public class Controller {
         return "YOU ARE HERE (" + board.getCurrentX() + ", " + board.getCurrentY() + ")" + " CELL TYPE: " + board.getCell(board.getCurrentX(), board.getCurrentY()).getType() + "\n";
     }
 
-    public static void processMove(Scanner sc, MHBoard board) {
+    public static void processMove(Scanner sc, MHBoard board, Market market, ArrayList<Hero> heroTeam) {
         System.out.println(printMoves());
         System.out.println("\nPlease enter a move a valid move: ");
         char move;
@@ -143,22 +159,22 @@ public class Controller {
 
         switch (move) {
             case 'W':
-                moveUp(board);
+                moveUp(board, market, heroTeam);
                 System.out.println(board);
                 System.out.println(youAreHere(board));
                 break;
             case 'S':
-                moveDown(board);
+                moveDown(board, market, heroTeam);
                 System.out.println(board);
                 System.out.println(youAreHere(board));
                 break;
             case 'A':
-                moveLeft(board);
+                moveLeft(board, market, heroTeam);
                 System.out.println(board);
                 System.out.println(youAreHere(board));
                 break;
             case 'D':
-                moveRight(board);
+                moveRight(board, market, heroTeam);
                 System.out.println(board);
                 System.out.println(youAreHere(board));
                 break;
