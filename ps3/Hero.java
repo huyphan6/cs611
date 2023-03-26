@@ -10,8 +10,9 @@ public abstract class Hero implements Attackable {
     protected Inventory inventory;
     protected Armor armorSlot;
     protected Weapon weaponSlot;
+    protected int XP;
 
-    public Hero(String name, int level, int HP, int MP, int strengthValue, int dexterityValue, int agilityValue, int gold, Inventory inventory) {
+    public Hero(String name, int level, int HP, int MP, int strengthValue, int dexterityValue, int agilityValue, int gold, Inventory inventory, int XP) {
         this.name = name;
         this.level = level;
         this.HP = HP;
@@ -21,6 +22,7 @@ public abstract class Hero implements Attackable {
         this.agilityValue = agilityValue;
         this.gold = gold;
         this.inventory = inventory;
+        this.XP = XP;
     }
 
     public String toString() {
@@ -34,6 +36,10 @@ public abstract class Hero implements Attackable {
 
     public int getLevel() {
         return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public int getHP() {
@@ -104,12 +110,20 @@ public abstract class Hero implements Attackable {
         return inventory;
     }
 
+    public int getXP() {
+        return XP;
+    }
+
+    public void setXP(int XP) {
+        this.XP = XP;
+    }
+
     public void attack(Attackable target) {
         if (target instanceof Monster m) {
             int damage = this.strengthValue;
             int weaponDamage = this.weaponSlot.getDamage();
             int defense = m.getDefense();
-            int dodge = m.getDodge();
+            int dodge = (int) (m.getDodge() * 0.01);
             int damageDealt;
             if (weaponSlot == null) {
                 damageDealt = (int) ((damage) * 0.05);;

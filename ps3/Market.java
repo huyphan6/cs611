@@ -366,10 +366,14 @@ public class Market {
                         itemChoice = sc.nextInt();
                     } while (itemChoice > heroTeam.get(heroChoice - 1).getInventory().getItems().size() || itemChoice < 1);
 
-                    System.out.println("You're choosing to sell: " + heroTeam.get(heroChoice - 1).getInventory().getItems().get(itemChoice - 1) + "\n");
+                    /// items will sell for 50% of their original price
+                    Item toSell = heroTeam.get(heroChoice - 1).getInventory().getItems().get(itemChoice - 1);
+                    int sellPrice = (int) (toSell.getPrice() * 0.5);
+
+                    System.out.println("You're choosing to sell: " + toSell + "\n");
 
                     // add gold to hero's gold
-                    heroTeam.get(heroChoice - 1).setGold(heroTeam.get(heroChoice - 1).getGold() + heroTeam.get(heroChoice - 1).getInventory().getItems().get(itemChoice - 1).getPrice());
+                    heroTeam.get(heroChoice - 1).setGold(heroTeam.get(heroChoice - 1).getGold() + sellPrice);
                     System.out.println("Here is your updated inventory: " + heroTeam.get(heroChoice - 1).getInventory().toString() + "\n");
                     System.out.println("You now have " + heroTeam.get(heroChoice - 1).getGold() + " gold!\n");
 
@@ -385,8 +389,8 @@ public class Market {
         Market m = new Market();
         Scanner sc = new Scanner(System.in);
         ArrayList<Hero> heroTeam = new ArrayList<>();
-        heroTeam.add(new Paladin("HUY", 3, 100, 100, 100, 100, 100, 2000, new Inventory()));
-        heroTeam.add(new Warrior("JEN", 3, 100, 100, 100, 100, 100, 200, new Inventory()));
+        heroTeam.add(new Paladin("HUY", 3, 100, 100, 100, 100, 100, 2000, new Inventory(), 0));
+        heroTeam.add(new Warrior("JEN", 3, 100, 100, 100, 100, 100, 200, new Inventory(), 0));
         Weapon w = new Weapon("Sword", 100, 2, 200, 1);
         heroTeam.get(0).getInventory().addItem(w);
         heroTeam.get(1).getInventory().addItem(w);

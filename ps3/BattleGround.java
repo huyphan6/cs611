@@ -65,13 +65,12 @@ public class BattleGround {
                 System.out.println(m);
             }
 
-
             // hero team goes first
             for (Hero h : heroTeam) {
                 // if the hero is alive, they can either choose to attack, cast a spell, use a potion, or equip armor
                 if (h.getHP() > 0) {
                     System.out.println("\nHero: " + h.getName() + ", HP: " + h.getHP() + ", MP: " + h.getMP());
-                    System.out.println("What would you like to do?");
+                    System.out.println("\nWhat would you like to do?");
                     System.out.println("[1]: Attack");
                     System.out.println("[2]: Cast a spell");
                     System.out.println("[3]: Use a potion");
@@ -80,7 +79,7 @@ public class BattleGround {
 
                     int heroDecision;
                     do {
-                        System.out.println("Enter a number between 1 and 4: ");
+                        System.out.println("Enter a number between 1 and 5: ");
                         while (!sc.hasNextInt()) {
                             System.out.println("That's not a number!");
                             sc.next();
@@ -193,6 +192,59 @@ public class BattleGround {
                     }
                 }
             }
+
+            // at the end of each round, heroes regain 10% of their HP and MP
+            for (Hero h : heroTeam) {
+                h.setHP(h.getHP() + (int) (h.getHP() * 0.1));
+                h.setMP(h.getMP() + (int) (h.getMP() * 0.1));
+            }
+        }
+
+        // check if the hero team is alive
+        boolean heroTeamAlive = false;
+        for (Hero h : heroTeam) {
+            if (h.getHP() > 0) {
+                heroTeamAlive = true;
+                break;
+            }
+        }
+
+        // if the hero team is still alive, they win and distribute rewards
+        if (heroTeamAlive) {
+            // heroes gain gold and XP after every battle:
+            // gold gained = monster's level * 100
+            // XP gained = monster's level * 2
+            for (Monster m : monsterTeam) {
+                for (Hero h : heroTeam) {
+                    h.setGold(h.getGold() + (m.getLevel() * 100));
+                    h.setXP(h.getXP() + (m.getLevel() * 2));
+                }
+            }
+
+            //XP required for a hero to level up = hero's current level * 10
+            // When a hero levels up, all of their skills increase by 5% of their current value
+            for (Hero h : heroTeam) {
+                if (h.getXP() >= h.getLevel() * 10) {
+                    // increase level by 1
+                    h.setLevel(h.getLevel() + 1);
+                    // reset XP to 0
+                    h.setXP(0);
+                    // HP is max 100 so if the hero's HP is greater than 100, set it to 100
+                    h.setHP(100);
+                    // mana increases by 11%
+                    h.setMP(h.getMP() + (int) (h.getMP() * 0.1));
+                    // increase all skills by 5%
+                    h.setStrengthValue(h.getStrengthValue() + (int) (h.getStrengthValue() * 0.05));
+                    h.setDexterityValue(h.getDexterityValue() + (int) (h.getDexterityValue() * 0.05));
+                    h.setAgilityValue(h.getAgilityValue() + (int) (h.getAgilityValue() * 0.05));
+                }
+            }
+        }
+        // if the hero team is dead, they lose and the game terminates
+        else {
+            System.out.println("Your team has been defeated!");
+            System.out.println("GAME OVER");
+            System.exit(0);
         }
     }
 
@@ -201,8 +253,8 @@ public class BattleGround {
         Scanner sc = new Scanner(System.in);
         System.out.println(bg.welcomeToBattleGround());
         ArrayList<Hero> heroTeam = new ArrayList<>();
-        heroTeam.add(new Paladin("HUY", 3, 100, 100, 100, 100, 100, 2000, new Inventory()));
-        heroTeam.add(new Warrior("JEN", 3, 100, 100, 100, 100, 100, 200, new Inventory()));
+        heroTeam.add(new Paladin("HUY", 3, 100, 100, 100, 100, 100, 2000, new Inventory(), 0));
+        heroTeam.add(new Warrior("JEN", 3, 100, 100, 100, 100, 100, 200, new Inventory(), 0));
         Weapon w = new Weapon("Sword", 100, 2, 200, 1);
         Armor a = new Armor("Shield", 100, 2, 200);
         Spell s = new Spell("Fireball", 100, 2, 200, 10);
