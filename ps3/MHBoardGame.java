@@ -57,8 +57,10 @@ public class MHBoardGame extends BoardGame{
         //If (0,0) is not available, then the user will be prompted to enter a new coordinate
         int x = 0;
         int y = 0;
+        // please spawn next to or in the market so that you can purchase weapons before battling
         while (board.getCell(x, y).getType() != ' ') {
             System.out.println("Please enter valid common space coordinates to start your team on the board. \n");
+            System.out.println("We recommend starting your team next to the market so that you can purchase weapons before battling. \n");
             do {
                 System.out.println("Please enter the x coordinate of the space you want to start on: ");
                 while (!sc.hasNextInt()) {
@@ -203,12 +205,13 @@ public class MHBoardGame extends BoardGame{
         board = initBoard(sc);
         heroTeam = initHeroTeam(sc);
         Market market = new Market();
+        BattleGround battleGround = new BattleGround();
 
         String validMoves = Controller.printMoves();
         System.out.println(board);
 
         while (continueGame) {
-            Controller.processMove(sc, board, market, heroTeam);
+            Controller.processMove(sc, board, market, battleGround, heroTeam);
         }
     }
 

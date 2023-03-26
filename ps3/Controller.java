@@ -3,10 +3,16 @@ import java.util.*;
 public class Controller {
 
     public static String printMoves() {
-        return "W: Move Up \nA: Move Left \nS: Move Down  \nD: Move Right \nI: Show Info \nM: Enter Market \nQ: Quit";
+        return "W: Move Up \nA: Move Left \nS: Move Down  \nD: Move Right \nQ: Quit";
     }
 
-    public static boolean moveUp(MHBoard board, Market market, ArrayList<Hero> heroTeam) {
+    // 20% chance of no battles, 80% chance of battles
+    public static boolean rollDice() {
+        int randomInt = (int)(Math.random()*10);
+        return randomInt < 0 || randomInt >= 2;
+    }
+
+    public static boolean moveUp(MHBoard board, Market market, BattleGround battleGround, ArrayList<Hero> heroTeam) {
         int currX = board.getCurrentX();
         int currY = board.getCurrentY();
         if (currX == board.getSize() - 1) {
@@ -34,11 +40,18 @@ public class Controller {
             board.setCurrentX(currX + 1);
             board.setCell(board.getCurrentX(), board.getCurrentY(), 'X');
             System.out.println("You moved up!");
+
+            if (rollDice()) {
+                System.out.println("Prepare for battle!");
+                Scanner sc = new Scanner(System.in);
+                battleGround.enterBattleGround(sc, heroTeam);
+            }
+
             return true;
         }
     }
 
-    public static boolean moveDown(MHBoard board, Market market, ArrayList<Hero> heroTeam) {
+    public static boolean moveDown(MHBoard board, Market market, BattleGround battleGround, ArrayList<Hero> heroTeam) {
         int currX = board.getCurrentX();
         int currY = board.getCurrentY();
         if (currX == 0) {
@@ -66,11 +79,18 @@ public class Controller {
             board.setCurrentX(currX - 1);
             board.setCell(board.getCurrentX(), board.getCurrentY(), 'X');
             System.out.println("You moved down!");
+
+            if (rollDice()) {
+                System.out.println("Prepare for battle!");
+                Scanner sc = new Scanner(System.in);
+                battleGround.enterBattleGround(sc, heroTeam);
+            }
+
             return true;
         }
     }
 
-    public static boolean moveLeft(MHBoard board, Market market, ArrayList<Hero> heroTeam) {
+    public static boolean moveLeft(MHBoard board, Market market, BattleGround battleGround, ArrayList<Hero> heroTeam) {
         int currX = board.getCurrentX();
         int currY = board.getCurrentY();
         if (currY == 0) {
@@ -98,11 +118,18 @@ public class Controller {
             board.setCurrentY(currY - 1);
             board.setCell(board.getCurrentX(), board.getCurrentY(), 'X');
             System.out.println("You moved left!");
+
+            if (rollDice()) {
+                System.out.println("Prepare for battle!");
+                Scanner sc = new Scanner(System.in);
+                battleGround.enterBattleGround(sc, heroTeam);
+            }
+
             return true;
         }
     }
 
-    public static boolean moveRight(MHBoard board, Market market, ArrayList<Hero> heroTeam) {
+    public static boolean moveRight(MHBoard board, Market market, BattleGround battleGround, ArrayList<Hero> heroTeam) {
         int currX = board.getCurrentX();
         int currY = board.getCurrentY();
         if (currY == board.getSize() - 1) {
@@ -130,6 +157,13 @@ public class Controller {
             board.setCurrentY(currY + 1);
             board.setCell(board.getCurrentX(), board.getCurrentY(), 'X');
             System.out.println("You moved right!");
+
+            if (rollDice()) {
+                System.out.println("Prepare for battle!");
+                Scanner sc = new Scanner(System.in);
+                battleGround.enterBattleGround(sc, heroTeam);
+            }
+
             return true;
         }
     }
@@ -144,7 +178,7 @@ public class Controller {
         return "YOU ARE HERE (" + board.getCurrentX() + ", " + board.getCurrentY() + ")" + " CELL TYPE: " + board.getCell(board.getCurrentX(), board.getCurrentY()).getType() + "\n";
     }
 
-    public static void processMove(Scanner sc, MHBoard board, Market market, ArrayList<Hero> heroTeam) {
+    public static void processMove(Scanner sc, MHBoard board, Market market, BattleGround battleGround, ArrayList<Hero> heroTeam) {
         System.out.println(printMoves());
         System.out.println("\nPlease enter a move a valid move: ");
         char move;
@@ -159,34 +193,28 @@ public class Controller {
 
         switch (move) {
             case 'W':
-                moveUp(board, market, heroTeam);
+                moveUp(board, market, battleGround, heroTeam);
                 System.out.println(board);
                 System.out.println(youAreHere(board));
                 break;
             case 'S':
-                moveDown(board, market, heroTeam);
+                moveDown(board, market, battleGround, heroTeam);
                 System.out.println(board);
                 System.out.println(youAreHere(board));
                 break;
             case 'A':
-                moveLeft(board, market, heroTeam);
+                moveLeft(board, market, battleGround, heroTeam);
                 System.out.println(board);
                 System.out.println(youAreHere(board));
                 break;
             case 'D':
-                moveRight(board, market, heroTeam);
+                moveRight(board, market, battleGround, heroTeam);
                 System.out.println(board);
                 System.out.println(youAreHere(board));
                 break;
             case 'Q':
                 System.out.println("Quitting the game...");
                 System.exit(0);
-                break;
-            case 'I':
-                System.out.println(board);
-                break;
-            case 'M':
-                System.out.println("Entering the market...");
                 break;
             default:
                 System.out.println("Invalid move! Please try again!");
