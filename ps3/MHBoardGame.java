@@ -8,9 +8,7 @@ public class MHBoardGame extends BoardGame{
     private Market market;
     private Inventory inventory;
 
-    private MHBoardGame(int size, ArrayList<Hero> heroTeam) {
-        this.board = new MHBoard(size);
-        this.heroTeam = heroTeam;
+    public MHBoardGame() {
     }
     public MHBoard getBoard() {
         return board;
@@ -213,13 +211,5 @@ public class MHBoardGame extends BoardGame{
         while (continueGame) {
             Controller.processMove(sc, board, market, battleGround, heroTeam);
         }
-    }
-
-    public static void main (String[] args) {
-        Scanner sc = new Scanner(System.in);
-        MHBoardGame game = new MHBoardGame(8, null);
-        Market market = new Market();
-        game.playGame(sc);
-
     }
 }

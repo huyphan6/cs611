@@ -78,6 +78,7 @@ public abstract class Monster implements Attackable {
             }
             int chance = (int) (Math.random() * 100);
             if (chance < dodge) {
+                System.out.println(this.name + " attacks " + h.getName() + " but misses!");
                 damageDealt = 0;
             }
             h.setHP(h.getHP() - damageDealt);

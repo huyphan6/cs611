@@ -384,16 +384,4 @@ public class Market {
             }
         }
     }
-
-    public static void main(String[] args) {
-        Market m = new Market();
-        Scanner sc = new Scanner(System.in);
-        ArrayList<Hero> heroTeam = new ArrayList<>();
-        heroTeam.add(new Paladin("HUY", 3, 100, 100, 100, 100, 100, 2000, new Inventory(), 0));
-        heroTeam.add(new Warrior("JEN", 3, 100, 100, 100, 100, 100, 200, new Inventory(), 0));
-        Weapon w = new Weapon("Sword", 100, 2, 200, 1);
-        heroTeam.get(0).getInventory().addItem(w);
-        heroTeam.get(1).getInventory().addItem(w);
-        m.enterMarket(sc, heroTeam);
-    }
 }

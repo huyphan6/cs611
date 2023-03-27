@@ -52,7 +52,7 @@ public class BattleGround {
         }
 
         // the battle continues until either all heroes have 0 HP or all the monsters have 0 HP
-        while (getHeroTeamHP(heroTeam) > 0 || getMonsterTeamHP(monsterTeam) > 0) {
+        while (getHeroTeamHP(heroTeam) > 0 && getMonsterTeamHP(monsterTeam) > 0) {
             // print the stats of the hero team
             System.out.println("Hero Team Stats:");
             for (Hero h : heroTeam) {
@@ -135,6 +135,9 @@ public class BattleGround {
                             } while (potionChoice < 0 || potionChoice > (h.getInventory().getItems().size() - 1));
                             // use the potion on the hero
                             h.usePotion((Potion) h.getInventory().getItems().get(potionChoice));
+
+                            // potions are single use items so after using it, remove it from the hero's inventory
+                            h.getInventory().getItems().remove(potionChoice);
                             break;
                         case 4:
                             // choose armor to equip from the hero's inventory
@@ -195,7 +198,11 @@ public class BattleGround {
 
             // at the end of each round, heroes regain 10% of their HP and MP
             for (Hero h : heroTeam) {
-                h.setHP(h.getHP() + (int) (h.getHP() * 0.1));
+                if (h.getHP() + (int) (h.getHP() * 0.1) > 100) {
+                    h.setHP(100);
+                } else {
+                    h.setHP(h.getHP() + (int) (h.getHP() * 0.1));
+                }
                 h.setMP(h.getMP() + (int) (h.getMP() * 0.1));
             }
         }
@@ -211,6 +218,7 @@ public class BattleGround {
 
         // if the hero team is still alive, they win and distribute rewards
         if (heroTeamAlive) {
+            System.out.println("The hero team has won the battle and slayed all the monsters!");
             // heroes gain gold and XP after every battle:
             // gold gained = monster's level * 100
             // XP gained = monster's level * 2
@@ -239,6 +247,10 @@ public class BattleGround {
                     h.setAgilityValue(h.getAgilityValue() + (int) (h.getAgilityValue() * 0.05));
                 }
             }
+            System.out.println("Here are the heroes' stats after the battle:");
+            for (Hero h : heroTeam) {
+                System.out.println(h);
+            }
         }
         // if the hero team is dead, they lose and the game terminates
         else {
@@ -246,22 +258,5 @@ public class BattleGround {
             System.out.println("GAME OVER");
             System.exit(0);
         }
-    }
-
-    public static void main (String[] args) {
-        BattleGround bg = new BattleGround();
-        Scanner sc = new Scanner(System.in);
-        System.out.println(bg.welcomeToBattleGround());
-        ArrayList<Hero> heroTeam = new ArrayList<>();
-        heroTeam.add(new Paladin("HUY", 3, 100, 100, 100, 100, 100, 2000, new Inventory(), 0));
-        heroTeam.add(new Warrior("JEN", 3, 100, 100, 100, 100, 100, 200, new Inventory(), 0));
-        Weapon w = new Weapon("Sword", 100, 2, 200, 1);
-        Armor a = new Armor("Shield", 100, 2, 200);
-        Spell s = new Spell("Fireball", 100, 2, 200, 10);
-        heroTeam.get(0).getInventory().addItem(a);
-        heroTeam.get(1).getInventory().addItem(a);
-        heroTeam.get(0).getInventory().addItem(w);
-        heroTeam.get(1).getInventory().addItem(w);
-        bg.enterBattleGround(sc, heroTeam);
     }
 }

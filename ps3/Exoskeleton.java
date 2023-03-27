@@ -31,11 +31,4 @@ public class Exoskeleton extends Monster{
 
         return exoskeletons;
     }
-
-    public static void main (String[] args) {
-        ArrayList<Monster> exoskeletons = initExoskeletons();
-        for (Monster e : exoskeletons) {
-            System.out.println(e);
-        }
-    }
 }

@@ -121,16 +121,17 @@ public abstract class Hero implements Attackable {
     public void attack(Attackable target) {
         if (target instanceof Monster m) {
             int damage = this.strengthValue;
-            int weaponDamage = this.weaponSlot.getDamage();
+            int weaponDamage;
             int defense = m.getDefense();
             int dodge = (int) (m.getDodge() * 0.01);
             int damageDealt;
             if (weaponSlot == null) {
-                damageDealt = (int) ((damage) * 0.05);;
+                weaponDamage = 0;
             }
             else{
-                damageDealt = (int) ((damage + weaponDamage) * 0.05);
+                weaponDamage = weaponSlot.getDamage();
             }
+            damageDealt = (int) ((damage + weaponDamage) * 0.05);
             if (damageDealt < 0) {
                 damageDealt = 0;
             }

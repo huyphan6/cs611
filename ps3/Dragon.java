@@ -31,11 +31,4 @@ public class Dragon extends Monster{
 
         return dragons;
     }
-
-    public static void main (String[] args) {
-        ArrayList<Monster> dragons = initDragons();
-        for (Monster d : dragons) {
-            System.out.println(d);
-        }
-    }
 }
