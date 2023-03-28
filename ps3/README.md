@@ -87,6 +87,30 @@ D: RIGHT
 3. The first command will compile all the java files
 4. The second command will run the program
 
+## Brief Description of UML and Game Extendability and Scalability
+
+1. The abstract classes Game, BoardGame, Board, along with classes such as Hero, Item, Market, BattleGround, and Monster laid the foundation and structure for this game. 
+2. My design allowed for both scalability and extendability because of my modular design. The structure allows for the potential addition of new types of monsters, heroes, items, and spells. You can also add new types of boards and games as well.
+
+## Changes made to the data files
+
+1. I converted the text files to be comma separated so that I could parse the information more easily.
+2. I also put them in their own packages, i.e. an Items package, a Hero package, a Monster package, etc. This allowed me to easily access the files and parse the information.
+
+## Rules of My Version of the Game
+
+1. The game is played on a 8x8 grid by default, but you can play on any size square grid greater than or equal to 8.
+2. The game is played by one or more players who control a team of heroes. The heroes are placed on the board at the start of the game. They move around the board to fight monsters, gain rewards, level up, and buy items from the market. 
+3. Heroes have a max HP of 100% and other abilities such as strength, dexterity, agility, etc., which they can level up.
+4. When a hero levels up, all of their atrributes increase by 5% and their HP is reset to 100.
+5. The XP required to level up is = hero's current level * 10.
+6. After every round of battle, heroes regain 10% of their HP and Mana.
+7. Heroes gain 100 * monster's level XP when they defeat a monster.
+8. Heroes gain 2 * # monsters when they defeat a monster.
+9. Items will sell for half price in the market after they are purchased.
+10. The party size is between 1 and 3 heroes.
+11. Hero attack damage = (hero's strength + hero's weapon damage) * 0.05.
+
 ## Input/Output Example
 
 ```agsl
