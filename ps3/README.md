@@ -78,6 +78,13 @@ S: DOWN = ROW-1 -> (GOES UP THE GRID)
 D: RIGHT 
 ```
 
+***For the grader***:
+- ***I created folders in the directory to store the text files and when I try and submit on gradescope, it removes this organization. The game requires that these txt files be in their respective folders. When you download my submission, please create folders for the text files and put them in their respective folders. For example, the armor.txt file should be in the Items folder. The dragon.txt file should be in the Monsters folder. The paladin.txt file should be in the Heroes folder. The game will not run if the text files are not in their respective folders.***
+- Contents of the folders:
+  - Heroes Folder: Paladins.txt, Sorcerers.txt, Warriors.txt
+  - Items Folder: Armory.txt, FireSpells.txt, IceSpells.txt, LightningSpells.txt, Potions.txt, Weaponry.txt
+  - Monsters Folder: Dragons.txt, Exoskeletons.txt, Spirits.txt
+
 ## How to compile and run
 
 1. After downloading all the files
